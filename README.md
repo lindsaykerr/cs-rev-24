@@ -1,2 +1,3 @@
-# cs-rev-24
-My CS revision for 2024
+# CS revision for 2024
+
+A knowledge refresh on the foundations of programming and computer programming.
