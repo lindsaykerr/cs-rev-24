@@ -187,13 +187,51 @@ class TestLinkedList(unittest.TestCase):
         self.linkedL.add(13)
         self.linkedL.add(23)
         self.linkedL.add(100)
-        self.assertEqual(self.linkedL.size(), 3)
+        self.assertEqual(self.linkedL.length(), 3)
         self.assertEqual(self.linkedL.get(0), 13)
         self.assertEqual(self.linkedL.get(1), 23)
         self.assertEqual(self.linkedL.get(2), 100)
         # TODO: raise errors instead of -1
-        self.assertEqual(self.linkedL.get(-23), -1)
-        self.assertEqual(self.linkedL.get(10), -1)
+        with self.assertRaises(IndexError):
+            self.linkedL.get(-23)
+        with self.assertRaises(IndexError):
+            self.linkedL.get(10)
+
+    def test_search_for_items(self):
+        self.linkedL.add(1)
+        self.linkedL.add(100)
+        self.linkedL.add(42)
+
+        self.assertTrue(self.linkedL.has(1))
+        self.assertTrue(self.linkedL.has(100))
+        self.assertTrue(self.linkedL.has(42))
+
+        self.assertFalse(self.linkedL.has(2))
+
+    def test_insert_item(self):
+        self.linkedL.insert(0, 1)
+        self.assertEqual(self.linkedL.get(0), 1)
+        self.linkedL.insert(1, 2)
+        self.assertEqual(self.linkedL.get(1), 2)
+        self.linkedL.insert(0, 3)
+        self.assertEqual(self.linkedL.get(0), 3)
+        self.linkedL.add(8)
+        self.linkedL.add(5)
+        self.linkedL.add(11)
+        self.linkedL.insert(45, 18)
+        self.assertEqual(self.linkedL.get(6), 18)
+
+    def test_remove_items(self):
+        self.linkedL.add('a')
+        self.linkedL.add('b')
+        self.linkedL.add('c')
+        self.linkedL.add('d')
+        self.assertEqual(self.linkedL.pop(), 'd')
+        self.assertEqual(self.linkedL.pop(), 'c')
+        self.assertEqual(self.linkedL.pop(), 'b')
+        self.assertEqual(self.linkedL.pop(), 'a')
+        with self.assertRaises(OverflowError):
+            self.linkedL.pop()
 
 
 if __name__ == '__main__':
