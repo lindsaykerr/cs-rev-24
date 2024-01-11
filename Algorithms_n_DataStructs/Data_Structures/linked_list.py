@@ -22,16 +22,13 @@ class LinkedList:
             the value of item to be added to the Linked list
         """
 
-        self.size += 1
-
         if self.head:
-            current: LinkedNode = self.head
-            while current.child:
-                current = current.child
-
-            current.child = LinkedNode(item)
+            current = self._to(self.size-1)
+            current[0].child = LinkedNode(item)
         else:
             self.head = LinkedNode(item)
+
+        self.size += 1
 
     def insert(self, indx, item):
         """
@@ -51,17 +48,9 @@ class LinkedList:
             self.append(item)
             return
 
-        counter = 0
-        current: LinkedNode = self.head
-        parent = self.head
-        while current.child:
-            if indx == counter:
-                break
-            counter += 1
-            current = current.child
-            parent = current
+        nodes = self._to(indx)
 
-        # break the link insert new item and reforms the link again
+        current, parent = nodes[0], nodes[1]
         temp = current
         if self.head == current:
             self.head = LinkedNode(item)
@@ -102,17 +91,9 @@ class LinkedList:
 
         if index > -1 and index < self.size:
 
-            # initialise a counter and assign linked list head to a temp
-            # reference variable
-            counter = 0
-            current: LinkedNode = self.head
-            while current.child:
-                if counter == index:
-                    break
-                # move to the next node and increment counter
-                current = current.child
-                counter += 1
-            return current.val
+            current = self._to(index)
+
+            return current[0].val
         else:
             raise IndexError("Index out of bounds")
 
@@ -126,16 +107,11 @@ class LinkedList:
             The item to be searched for
         """
 
-        current: LinkedNode = self.head
-        while current.child:
-            if current.val == item:
-                break
-            current = current.child
-
-        if current.val == item:
-            return True
-        else:
+        indx = self._findIndx(item)
+        if indx == -1:
             return False
+        else:
+            return True
 
     def index(self, item):
         """
@@ -147,18 +123,7 @@ class LinkedList:
             The index of an linked list item
         """
 
-        counter = 0
-        current: LinkedNode = self.head
-        while current.child:
-            if current.val == item:
-                break
-            current = current.child
-            counter += 1
-
-        if current.val == item:
-            return counter
-        else:
-            return -1
+        return self._findIndx(item)
 
     def isEmpty(self):
         """
@@ -190,21 +155,14 @@ class LinkedList:
         if isinstance(pos, int) and pos > -1 and pos < self.size:
             indx = pos
 
-        counter = 0
-        current: LinkedNode = self.head
-        parent = self.head
-        while counter < indx:
-            counter += 1
-            parent = current
-            current = current.child
+        nodes = self._to(indx)
+        current, parent = nodes[0], nodes[1]
 
         val = current.val
-
         if current == self.head:
             self.head = current.child
         else:
             parent.child = current.child
-
         del current
 
         self.size -= 1
@@ -229,6 +187,42 @@ class LinkedList:
             self.head.child = temp
         else:
             self.head = LinkedNode(item)
+
+    # HELPER METHODS
+
+    def _to(self, pos):
+        """
+        Goes up to a point in the linked list, then returns the current and
+        parent node
+        """
+        current: LinkedNode = self.head
+        parent = self.head
+        count = 0
+        while count < pos and current.child:
+            parent = current
+            current = current.child
+            count += 1
+
+        if pos != count:
+            raise OverflowError("Invalid item postion on linked list")
+        else:
+            return (current, parent)
+
+    def _findIndx(self, item):
+        """
+        Finds the index of an node item in the list return -1 if nothing
+        is found
+        """
+        current: LinkedNode = self.head
+        indx_counter = 0
+        while current.child and item != current.val:
+            current = current.child
+            indx_counter += 1
+
+        if current.val != item:
+            return -1
+        else:
+            return indx_counter
 
     def printOut(self):
         """

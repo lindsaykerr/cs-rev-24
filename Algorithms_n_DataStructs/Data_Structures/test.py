@@ -238,17 +238,13 @@ class TestLinkedList(unittest.TestCase):
         self.linkedL.add(2)
         self.linkedL.add(3)
         self.linkedL.add(4)
-        self.linkedL.printOut()
         item = self.linkedL.pop(pos=0)
         self.assertEqual(self.linkedL.length(), 3)
         self.assertEqual(item, 4)
-
-        self.linkedL.printOut()
         item = self.linkedL.pop(pos=2)
         self.assertEqual(self.linkedL.length(), 2)
         self.assertEqual(item, 1)
         item = self.linkedL.pop(pos=1)
-        self.linkedL.printOut()
         self.assertEqual(self.linkedL.length(), 1)
 
     def test_add_item(self):
