@@ -184,9 +184,9 @@ class TestLinkedList(unittest.TestCase):
         self.linkedL = LinkedList()
 
     def test_adding_items_to_list(self):
-        self.linkedL.add(13)
-        self.linkedL.add(23)
-        self.linkedL.add(100)
+        self.linkedL.append(13)
+        self.linkedL.append(23)
+        self.linkedL.append(100)
         self.assertEqual(self.linkedL.length(), 3)
         self.assertEqual(self.linkedL.get(0), 13)
         self.assertEqual(self.linkedL.get(1), 23)
@@ -198,9 +198,9 @@ class TestLinkedList(unittest.TestCase):
             self.linkedL.get(10)
 
     def test_search_for_items(self):
-        self.linkedL.add(1)
-        self.linkedL.add(100)
-        self.linkedL.add(42)
+        self.linkedL.append(1)
+        self.linkedL.append(100)
+        self.linkedL.append(42)
 
         self.assertTrue(self.linkedL.has(1))
         self.assertTrue(self.linkedL.has(100))
@@ -208,30 +208,57 @@ class TestLinkedList(unittest.TestCase):
 
         self.assertFalse(self.linkedL.has(2))
 
-    def test_insert_item(self):
+    def test_append_item(self):
         self.linkedL.insert(0, 1)
         self.assertEqual(self.linkedL.get(0), 1)
         self.linkedL.insert(1, 2)
         self.assertEqual(self.linkedL.get(1), 2)
         self.linkedL.insert(0, 3)
         self.assertEqual(self.linkedL.get(0), 3)
-        self.linkedL.add(8)
-        self.linkedL.add(5)
-        self.linkedL.add(11)
+        self.linkedL.append(8)
+        self.linkedL.append(5)
+        self.linkedL.append(11)
         self.linkedL.insert(45, 18)
         self.assertEqual(self.linkedL.get(6), 18)
 
     def test_remove_items(self):
-        self.linkedL.add('a')
-        self.linkedL.add('b')
-        self.linkedL.add('c')
-        self.linkedL.add('d')
+        self.linkedL.append('a')
+        self.linkedL.append('b')
+        self.linkedL.append('c')
+        self.linkedL.append('d')
         self.assertEqual(self.linkedL.pop(), 'd')
         self.assertEqual(self.linkedL.pop(), 'c')
         self.assertEqual(self.linkedL.pop(), 'b')
         self.assertEqual(self.linkedL.pop(), 'a')
         with self.assertRaises(OverflowError):
             self.linkedL.pop()
+
+    def test_romve_item_by_pos(self):
+        self.linkedL.add(1)
+        self.linkedL.add(2)
+        self.linkedL.add(3)
+        self.linkedL.add(4)
+        self.linkedL.printOut()
+        item = self.linkedL.pop(pos=0)
+        self.assertEqual(self.linkedL.length(), 3)
+        self.assertEqual(item, 4)
+
+        self.linkedL.printOut()
+        item = self.linkedL.pop(pos=2)
+        self.assertEqual(self.linkedL.length(), 2)
+        self.assertEqual(item, 1)
+        item = self.linkedL.pop(pos=1)
+        self.linkedL.printOut()
+        self.assertEqual(self.linkedL.length(), 1)
+
+    def test_add_item(self):
+        self.assertEqual(self.linkedL.length(), 0)
+        self.linkedL.add(1)
+        self.linkedL.add(2)
+        self.linkedL.add(3)
+        self.assertEqual(self.linkedL.length(), 3)
+        self.assertEqual(self.linkedL.get(2), 1)
+        self.assertEqual(self.linkedL.get(0), 3)
 
 
 if __name__ == '__main__':

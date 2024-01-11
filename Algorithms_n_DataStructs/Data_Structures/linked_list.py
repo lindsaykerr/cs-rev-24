@@ -12,7 +12,15 @@ class LinkedList:
         self.head: LinkedNode = None
         self.size = 0
 
-    def add(self, item):
+    def append(self, item):
+        """
+        Append an item to the end of Linked list
+
+        Parameters
+        ----------
+        item: any
+            the value of item to be added to the Linked list
+        """
 
         self.size += 1
 
@@ -26,9 +34,21 @@ class LinkedList:
             self.head = LinkedNode(item)
 
     def insert(self, indx, item):
+        """
+        Inserts and item into a linked list at position indx, if indx is a
+        value which is not with in the range of the Linked list length then
+        the item will be added to the end of the list
+
+        Parameters
+        ----------
+        indx: int
+            The index of the linked list item
+        item: any
+            the value or object stored within the linked list
+        """
 
         if indx < 0 or indx > self.size - 1:
-            self.add(item)
+            self.append(item)
             return
 
         counter = 0
@@ -53,6 +73,14 @@ class LinkedList:
         self.size += 1
 
     def length(self):
+        """
+        Get the length of the linked list
+
+        Returns
+        -------
+        int
+            The length of the Linked list
+        """
 
         return self.size
 
@@ -89,6 +117,15 @@ class LinkedList:
             raise IndexError("Index out of bounds")
 
     def has(self, item):
+        """
+        Check if an item is within the linked list
+
+        Parameters
+        ----------
+        item: any
+            The item to be searched for
+        """
+
         current: LinkedNode = self.head
         while current.child:
             if current.val == item:
@@ -101,6 +138,15 @@ class LinkedList:
             return False
 
     def index(self, item):
+        """
+        Return the index value of an item in the list
+
+        Parameters
+        ----------
+        item: any
+            The index of an linked list item
+        """
+
         counter = 0
         current: LinkedNode = self.head
         while current.child:
@@ -115,10 +161,80 @@ class LinkedList:
             return -1
 
     def isEmpty(self):
+        """
+        Check if the device is linked list is empty
+
+        Returns
+        -------
+        bool
+            True if the list is empty false otherwise
+        """
 
         return self.size == 0
 
+    def pop(self, pos=None):
+        """
+        Remove an item from the end of the linked list
+
+        Returns
+        -------
+        item: any
+            A value or object within a list
+        """
+
+        if self.size == 0:
+            raise OverflowError("Cannot remove from and empty linked list")
+
+        indx = self.size-1
+
+        if isinstance(pos, int) and pos > -1 and pos < self.size:
+            indx = pos
+
+        counter = 0
+        current: LinkedNode = self.head
+        parent = self.head
+        while counter < indx:
+            counter += 1
+            parent = current
+            current = current.child
+
+        val = current.val
+
+        if current == self.head:
+            self.head = current.child
+        else:
+            parent.child = current.child
+
+        del current
+
+        self.size -= 1
+
+        return val
+
+    def add(self, item):
+        """
+        Adds an item to the start of the linked list
+
+        Parameters
+        ----------
+        item: any
+            value or object to be added
+        """
+
+        self.size += 1
+
+        if self.head is not None:
+            temp = self.head
+            self.head = LinkedNode(item)
+            self.head.child = temp
+        else:
+            self.head = LinkedNode(item)
+
     def printOut(self):
+        """
+        Prints out the items within the list
+        """
+
         current = self.head
         list = '['
         while current.child:
@@ -127,22 +243,3 @@ class LinkedList:
 
         list = list + str(current.val) + ']'
         print(list)
-
-    def pop(self):
-        if self.size == 0:
-            raise OverflowError("Cannot remove from and empty linked list")
-
-        current: LinkedNode = self.head
-        parent = self.head
-        while current.child:
-            parent = current
-            current = current.child
-
-        val = current.val
-        parent.child = None
-        del current
-
-        self.size -= 1
-        
-        return val
-
